@@ -1,0 +1,7 @@
+---
+- hosts: "127.0.0.1"
+  gather_facts: yes
+  become: yes
+  roles:
+  - role: ansible-add-zabbix-agent
+...

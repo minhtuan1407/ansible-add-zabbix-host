@@ -1,0 +1,24 @@
+- name: Create a new host or update an existing host's info
+  local_action:
+    module: community.zabbix.zabbix_host
+    server_url: https://zabbix.tel4vn.com/zabbix/
+    login_user: "{{ zabbix_admin_user }}"
+    login_password: "{{ zabbix_admin_password }}"
+    host_name: "{{ customer_name }} {{ system_name }} {{ server_order_number }} {{ ip_server }}"
+    host_groups: "{{ zabbix_agent_group }}"
+    link_templates:
+      - "Template OS Linux"
+      - "Template App SSH Service"
+      - "Template Module ICMP Ping"
+      - "Template ping 8.8.8.8"
+    status: enabled
+    state: present
+    inventory_mode: disabled
+    ipmi_authtype: "-1"
+    ipmi_privilege: "2"
+    interfaces:
+      - type: "1"
+        main: "1"
+        useip: "1"
+        ip: "{{ ip_server }}"
+        port: "{{ port_server }}"

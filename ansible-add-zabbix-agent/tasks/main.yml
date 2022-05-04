@@ -1,0 +1,75 @@
+---
+# tasks file for tuantest-add-zabbix-host
+# - import_tasks: add-host-{{ system_name }}.yml
+#   tags:
+#     - add-host-{{ system_name }}
+# - import_tasks: add-action-{{ system_name }}.yml
+#   tags:
+#     - add-action-{{ system_name }}
+- import_tasks: add-host-CloudPBX.yml
+  tags:
+    - add-host-CloudPBX
+- import_tasks: add-action-CloudPBX.yml
+  tags:
+    - add-action-CloudPBX
+- import_tasks: add-host-SBC.yml
+  tags:
+    - add-host-SBC
+- import_tasks: add-action-SBC.yml
+  tags:
+    - add-action-SBC
+- import_tasks: add-host-PitelPBX.yml
+  tags:
+    - add-host-PitelPBX
+- import_tasks: add-action-PitelPBX.yml
+  tags:
+    - add-action-PitelPBX
+- import_tasks: add-host-Autocall.yml
+  tags:
+    - add-host-Autocall
+- import_tasks: add-action-Autocall.yml
+  tags:
+    - add-action-Autocall
+- import_tasks: add-host-PitelCallCenter.yml
+  tags:
+    - add-host-PitelCallCenter
+- import_tasks: add-action-PitelCallCenter.yml
+  tags:
+    - add-action-PitelCallCenter
+- import_tasks: add-host-BillingAST.yml
+  tags:
+    - add-host-BillingAST
+- import_tasks: add-action-BillingAST.yml
+  tags:
+    - add-action-BillingAST
+- import_tasks: add-host-BillingFS.yml
+  tags:
+    - add-host-BillingFS
+- import_tasks: add-action-BillingFS.yml
+  tags:
+    - add-action-BillingFS
+- import_tasks: add-host-ELK.yml
+  tags:
+    - add-host-ELK
+- import_tasks: add-action-ELK.yml
+  tags:
+    - add-action-ELK
+- import_tasks: add-host-LAB.yml
+  tags:
+    - add-host-LAB
+- import_tasks: add-action-LAB.yml
+  tags:
+    - add-action-LAB
+- import_tasks: add-host-Database.yml
+  tags:
+    - add-host-Database
+- import_tasks: add-action-Database.yml
+  tags:
+    - add-action-Database
+- import_tasks: add-host-WebServer.yml
+  tags:
+    - add-host-WebServer
+- import_tasks: add-action-WebServer.yml
+  tags:
+    - add-action-WebServer
+...

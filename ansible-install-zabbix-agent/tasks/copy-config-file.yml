@@ -1,0 +1,15 @@
+- name: Add user zabbix to group asterisk
+  shell:
+    cmd: "usermod -a -G asterisk zabbix"
+  ignore_errors: yes
+- name: Add user zabbix to group www-data
+  shell:
+    cmd: "usermod -a -G www-data zabbix"
+  ignore_errors: yes
+- name: Copy config file zabbix-agent
+  template:
+    src: zabbix-agentd-conf.j2
+    dest: /etc/zabbix/zabbix_agentd.conf
+  notify:
+    - enable zabbix-agent
+    - restart zabbix-agent

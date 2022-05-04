@@ -1,0 +1,77 @@
+- name: Deploy trigger action
+  community.zabbix.zabbix_action:
+    server_url: https://zabbix.tel4vn.com/zabbix/
+    login_user: "{{ zabbix_admin_user }}"
+    login_password: "{{ zabbix_admin_password }}"
+    name: "REPORT {{ customer_name }} {{ system_name }} {{ server_order_number }} {{ ip_server }}"
+    event_source: 'trigger'
+    state: present
+    status: enabled
+    esc_period: 1h
+    default_subject: 'Problem: {EVENT.NAME}'
+    default_message: 'Problem started at {EVENT.TIME} on {EVENT.DATE}
+
+                      Problem name: {EVENT.NAME}
+
+                      Host: {HOST.NAME}
+
+                      Severity: {EVENT.SEVERITY}
+
+
+                      Original problem ID: {EVENT.ID}
+
+                      {TRIGGER.URL}'
+    operations:
+    - type: send_message
+      media_type: 'all'
+      send_to_users:
+      - 'Admin'
+    recovery_default_subject: 'Resolved: {EVENT.NAME}'
+    recovery_default_message: 'Problem has been resolved at {EVENT.RECOVERY.TIME} on {EVENT.RECOVERY.DATE}
+
+                              Problem name: {EVENT.NAME}
+
+                              Host: {HOST.NAME}
+
+                              Severity: {EVENT.SEVERITY}
+
+
+                              Original problem ID: {EVENT.ID}
+
+                              {TRIGGER.URL}'
+    recovery_operations:
+    - type: send_message
+      media_type: 'all'
+      send_to_users:
+      - 'Admin'
+    conditions:
+      - type: 'trigger_name'
+        operator: 'like'
+        value: 'SSH service is down on port {{ port_ssh }} {{ customer_name }} {{ system_name }} {{ server_order_number }} {{ ip_server }}'
+      - type: 'trigger_name'
+        operator: 'like'
+        value: 'Zabbix agent on {{ customer_name }} {{ system_name }} {{ server_order_number }} {{ ip_server }} is unreachable for 5 minutes'
+      - type: 'trigger_name'
+        operator: 'like'
+        value: 'HTTP service is down on {{ customer_name }} {{ system_name }} {{ server_order_number }} {{ ip_server }}'
+      - type: 'trigger_name'
+        operator: 'like'
+        value: 'HTTPS service is down on {{ customer_name }} {{ system_name }} {{ server_order_number }} {{ ip_server }}'
+      - type: 'trigger_name'
+        operator: 'like'
+        value: 'Free disk space is less than 10% on {{ customer_name }} {{ system_name }} {{ server_order_number }} {{ ip_server }} volume'
+      - type: 'trigger_name'
+        operator: 'like'
+        value: 'Free disk space is less than 20% on {{ customer_name }} {{ system_name }} {{ server_order_number }} {{ ip_server }} volume'
+      - type: 'trigger_name'
+        operator: 'like'
+        value: 'Disk I/O is overloaded on {{ customer_name }} {{ system_name }} {{ server_order_number }} {{ ip_server }}'
+      - type: 'trigger_name'
+        operator: 'like'
+        value: 'Lack of available memory on server {{ customer_name }} {{ system_name }} {{ server_order_number }} {{ ip_server }}'
+      - type: 'trigger_name'
+        operator: 'like'
+        value: 'Monitor CPU over 90% {{ customer_name }} {{ system_name }} {{ server_order_number }} {{ ip_server }}'
+      - type: 'trigger_name'
+        operator: 'like'
+        value: 'Unavailable by ICMP ping on {{ customer_name }} {{ system_name }} {{ server_order_number }} {{ ip_server }}'

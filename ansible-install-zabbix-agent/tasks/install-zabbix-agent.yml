@@ -1,0 +1,86 @@
+---
+- name: Check that is zabbix_agentd exists
+  stat:
+    path: /usr/sbin/zabbix_agentd
+  register: zabbix_agentd_exist
+- name: Download zabbix deb file for Debian 10
+  get_url:
+    url: "https://repo.zabbix.com/zabbix/4.5/debian/pool/main/z/zabbix-release/zabbix-release_4.5-1+buster_all.deb"
+    dest: "/tmp/zabbix-release_4.5-1+buster_all.deb"
+    validate_certs: no
+  when: ansible_distribution_release == "buster" and zabbix_agentd_exist.stat.exists == False
+- name: Install zabbix deb in Debian 10
+  apt: deb="/tmp/zabbix-release_4.5-1+buster_all.deb"
+  when: ansible_distribution_release == "buster" and zabbix_agentd_exist.stat.exists == False
+- name: Install zabbix-agent 4.5 Debian 10
+  apt:
+    name: zabbix-agent
+    state: latest
+    update_cache: yes
+  ignore_errors: yes
+  when: ansible_distribution_release == "buster" and zabbix_agentd_exist.stat.exists == False
+- name: Download zabbix deb file for Debian 9
+  get_url:
+    url: "https://repo.zabbix.com/zabbix/4.5/debian/pool/main/z/zabbix-release/zabbix-release_4.5-1+stretch_all.deb"
+    dest: "/tmp/zabbix-release_4.5-1+stretch_all.deb"
+    validate_certs: no
+  when: ansible_distribution_release == "stretch" and zabbix_agentd_exist.stat.exists == False
+- name: Install zabbix deb in Debian 9
+  apt: deb="/tmp/zabbix-release_4.5-1+stretch_all.deb"
+  when: ansible_distribution_release == "stretch" and zabbix_agentd_exist.stat.exists == False
+- name: Install zabbix-agent 4.5 Debian 9
+  apt:
+    name: zabbix-agent
+    state: latest
+    update_cache: yes
+  ignore_errors: yes
+  when: ansible_distribution_release == "stretch" and zabbix_agentd_exist.stat.exists == False
+- name: Download zabbix deb file for Ubuntu 18.04
+  get_url:
+    url: "https://repo.zabbix.com/zabbix/4.5/ubuntu/pool/main/z/zabbix-release/zabbix-release_4.5-1%2Bbionic_all.deb"
+    dest: "/tmp/zabbix-release_4.5-1+bionic_all.deb"
+    validate_certs: no
+  when: ansible_distribution_release == "bionic" and zabbix_agentd_exist.stat.exists == False
+- name: Install zabbix deb in Ubuntu 18.04
+  apt: deb="/tmp/zabbix-release_4.5-1+bionic_all.deb"
+  when: ansible_distribution_release == "bionic" and zabbix_agentd_exist.stat.exists == False
+- name: Install zabbix-agent 4.5 Ubuntu 18.04
+  apt:
+    name: zabbix-agent
+    state: latest
+    update_cache: yes
+  ignore_errors: yes
+  when: ansible_distribution_release == "bionic" and zabbix_agentd_exist.stat.exists == False
+- name: Disable SELinux
+  selinux:
+    state: disabled
+  when: ansible_distribution == "CentOS"
+- name: Install zabbix CentOS 7 rpm file
+  yum:
+    name: "https://repo.zabbix.com/zabbix/4.5/rhel/7/x86_64/zabbix-release-4.5-1.el7.noarch.rpm"
+    state: present
+    validate_certs: no
+  ignore_errors: yes
+  when: ansible_distribution == "CentOS" and zabbix_agentd_exist.stat.exists == False
+- name: Install zabbix-agent for CentOS 7
+  yum:
+    name: zabbix-agent
+    enablerepo: zabbix
+    update_cache: False
+    state: latest
+  when: ansible_distribution == "CentOS" and zabbix_agentd_exist.stat.exists == False
+- name: Create directory log zabbix-agent for CentOS 7
+  file:
+    path: /var/log/zabbix-agent/
+    state: directory
+    owner: zabbix
+    group: zabbix
+    mode: "0755"
+- name: Create file log zabbix-agent for CentOS 7
+  file:
+    path: /var/log/zabbix-agent/zabbix_agentd.log
+    state: touch
+    owner: zabbix
+    group: zabbix
+    mode: "0755"
+...

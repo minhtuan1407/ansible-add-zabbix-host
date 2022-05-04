@@ -1,0 +1,3 @@
+---
+# defaults file for ansible-install-zabbix-agent
+server: "103.127.206.135"

@@ -1,0 +1,8 @@
+- name: enable zabbix-agent
+  systemd:
+    name: zabbix-agent
+    enabled: yes
+- name: restart zabbix-agent
+  systemd:
+    name: zabbix-agent
+    state: restarted
